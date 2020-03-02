@@ -6,10 +6,15 @@ function todoADD() {
     content,
     state: "active"
   };
-
+  if(todos.content === ''){
+    alert("you list empty")
+    // showAlert('.danger', 'Your List Empty')
+    return
+  }
+//   showAlert('.success', 'Good')
   setStorage(todos);
-
   renderDOM(todos);
+  content.value = ''
 }
 
 function deleteTodo(){
@@ -23,6 +28,52 @@ function deleteTodo(){
     renderDOM(todos)
 }
 
+// function showAlert(type, message){
+//     document.querySelector('#main').innerHTML =''
+
+//     let alert = document.createElement('div')
+//     alert.classList.add(type);
+//     alert.innerHTML = message
+
+//     document.querySelector('#main').prepend(alert)
+
+//     setTimeout({ //buna ba sefdi
+//         alert.remove()
+//     }, 1000)
+    
+// }
+
+function completedTodo(){
+    liIndex = $(this).attr('data-set');
+    this.classList.toggle('completed')
+    if(todos[liIndex].state === 'active'){
+        todos[liIndex].state = 'completed'
+    } else {
+        todos[liIndex].state = 'active'
+
+    }
+    window.localStorage.setItem('todos', JSON.stringify(todos))
+}
+
+
+
+
+// function showCompletedTodo(){
+//     todoIndex = $('.li').attr('data-set')
+//     renderDOM(todos[todoIndex].state === 'completed')
+// }
+
+// function setTimeDelete(){
+//     // let liIndex = $(this).attr('data-set')
+//     let liIndex = this.classList
+//     console.log(liIndex);
+    
+//     setTimeout(function(){
+//         if(confirm('do you want remove')){
+//             liIndex.parentNode.removeChild(liIndex)
+//         }
+//     },1000)
+// }
 
 
 
@@ -36,9 +87,6 @@ function getStorage() {
 }
 
 let todos = getStorage();
-console.log(todos);
-
-
 
 function setStorage(value) {
   todos.push(value);
@@ -48,23 +96,32 @@ function setStorage(value) {
 function renderDOM() {
   document.querySelector("#main").innerHTML = "";
   todos.forEach((item, index) => {
-    let list = document.createElement('div')
-    let div = document.createElement("div");
-    list.className = 'list'
-    div.innerHTML =index+1 + '. ' + item.content;
-    div.style.marginRight = '5px'
+    let ul = document.createElement('ul')
+    let span = document.createElement('span');
+    span.innerHTML = index+1+'. '
+    let li = document.createElement("li");
+    li.className = 'li'
+    ul.className = 'list'
+    li.setAttribute('data-set', index)
+    li.classList.add('active')
+    li.innerHTML =item.content;
+    li.style.marginRight = '5px'
     let btnDlt = document.createElement('button');
     btnDlt.setAttribute('data-set', index)
     btnDlt.classList.add('delete-btn')
     btnDlt.innerHTML = 'X'
-    
-    list.append(div)
-    list.append(btnDlt)
+    ul.append(span)
+    ul.append(li)
+    ul.append(btnDlt)
 
-    document.querySelector("#main").append(list);
+    document.querySelector("#main").append(ul);
   });
 }
+// $(document).on('click', '.li', setTimeDelete)
 $(document).on('click', '.delete-btn', deleteTodo)
+$(document).on('click', '.li', completedTodo)
+
+
 renderDOM(todos);
 
 

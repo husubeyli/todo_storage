@@ -13,8 +13,19 @@
     display: flex;
     flex-direction: row;
 }
-div {
-    display: inline-block;
+
+
+.list {
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.danger {
+    color: red;
+}
+
+.success {
+    color: green;
 }
 
 
