@@ -1,0 +1,20 @@
+*{
+    box-sizing: border-box;
+}
+.active{
+    color: red;
+}
+
+.completed {
+    color: gray;
+    text-decoration: line-through;
+}
+.list {
+    display: flex;
+    flex-direction: row;
+}
+div {
+    display: inline-block;
+}
+
+
